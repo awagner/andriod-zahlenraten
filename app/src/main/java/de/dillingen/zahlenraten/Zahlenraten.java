@@ -2,6 +2,7 @@ package de.dillingen.zahlenraten;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,30 +55,38 @@ public class Zahlenraten extends ActionBarActivity {
     private void checkNumber() {
 
         int currentnumber = Integer.parseInt(inputnumber.getText().toString());
-
-        if (currentnumber == zahl) {
-            status.setText("Sie haben die Zahl erraten!");
-        } else {
-            if (currentnumber < zahl) {
-                status.setText("Die Zahl ist zu klein!");
-            } else {
-                status.setText("Die Zahl ist zu groß!");
-            }
-        }
         versuche++;
 
+        if (currentnumber == zahl) {
+            status.setText("Sie haben die Zahl erraten!\nVersuche: " + versuche);
+        } else {
+            if (currentnumber < zahl) {
+                status.setText(currentnumber + " ist zu klein!\nVersuche: " + versuche);
+                inputnumber.setText("");
+            } else {
+                status.setText(currentnumber + " ist zu groß!\nVersuche: " + versuche);
+                inputnumber.setText("");
+            }
+        }
+
+
     }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+
+        if (keyCode ==  KeyEvent.KEYCODE_ENTER) {
+            this.checkNumber();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
 
     /** Ereignisbehandlung des "starteSpiel" Buttons: startet das Spiel */
     public void onClickNewGame(View v) {
         this.newGame();
     }
-
-    /** Ereignisbehandlung des "Zahl überprüfen" Buttons */
-    public void onClickCheckNumber(View v) {
-        this.checkNumber();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
